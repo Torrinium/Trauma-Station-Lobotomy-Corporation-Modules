@@ -1,0 +1,12 @@
+﻿# Debugging abnormality to make sure all the core parts work right.
+- type: entity
+  parent: [ BaseAbnormality, BaseAbnormalityAI, SimpleMobBase ]
+  id: MobAbnormalityDebug
+  name: debug abnormality
+  description: A placeholder abnormality. You probably shouldn't be seeing this!
+  components:
+  - type: Sprite
+    sprite: Mobs/Animals/mouse.rsi
+    state: mouse-0
+  - type: Abnormality
+    risk: Teth

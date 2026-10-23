@@ -1,0 +1,27 @@
+﻿# Faction: Who an abnormality does not like.
+- type: npcFaction
+  id: Abnormality
+  hostile:
+  - Xeno
+  - Zombie
+  - Syndicate
+
+# Identity: Every abnormality for any one body.
+- type: entity
+  id: BaseAbnormality
+  abstract: true
+  components:
+  - type: Abnormality
+  - type: NpcFactionMember
+    factions: [Abnormality]
+
+# Default NPC behavior: used when no player is in control.
+- type: entity
+  id: BaseAbnormalityAI
+  abstract: true
+  components:
+  - type: NPCRetaliation
+    attackMemoryLength: 15
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound

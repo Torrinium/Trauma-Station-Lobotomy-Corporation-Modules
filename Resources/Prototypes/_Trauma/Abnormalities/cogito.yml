@@ -1,0 +1,14 @@
+﻿- type: entity
+  parent: BaseItem
+  id: CogitoInjector
+  name: cogito injector
+  description: This injector swirls with dark ichor, even when undisturbed.
+  components:
+    - type: Item
+      size: Tiny
+    - type: Sprite
+      sprite: Objects/Specific/Medical/medipen.rsi
+      layers:
+      - state: livepen
+    - type: CogitoInjector
+      injectDelay: 6
