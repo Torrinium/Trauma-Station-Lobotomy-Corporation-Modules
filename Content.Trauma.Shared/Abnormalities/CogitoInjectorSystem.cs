@@ -27,7 +27,7 @@ public sealed partial class CogitoInjectorSystem : EntitySystem
 
     private void OnRangedInteract(Entity<CogitoInjectorComponent> ent, ref BeforeRangedInteractEvent args)
     {
-        if (args.Handled || !args.CanReach || args.Target is not { } target|| ent.Comp.UsedUp || !HasComp<MobStateComponent>(target))
+        if (args.Handled || !args.CanReach || args.Target is not { } target|| ent.Comp.UsedUp || !HasComp<MobStateComponent>(target) || HasComp<CogitoTransformingComponent>(target))
             return;
         if (HasComp<AbnormalityComponent>(target))
         {
