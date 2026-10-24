@@ -1,9 +1,9 @@
-﻿// SPDX-License-Identifier: AGPL-3.0-or-later
+﻿/// SPDX-License-Identifier: AGPL-3.0-or-later
 using Robust.Shared.Audio.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
-
+using Content.Shared.Mobs.Components;
 
 namespace Content.Trauma.Shared.Abnormalities;
 
@@ -27,8 +27,14 @@ public sealed partial class CogitoInjectorSystem : EntitySystem
 
     private void OnRangedInteract(Entity<CogitoInjectorComponent> ent, ref BeforeRangedInteractEvent args)
     {
-        if (args.Handled || !args.CanReach || args.Target is not { } target|| ent.Comp.UsedUp)
+        if (args.Handled || !args.CanReach || args.Target is not { } target|| ent.Comp.UsedUp || !HasComp<MobStateComponent>(target))
             return;
+        if (HasComp<AbnormalityComponent>(target))
+        {
+            args.Handled = true;
+            _popup.PopupEntity(Loc.GetString("cogito-inject-invalid-target"), args.User, args.User);
+            return;
+        }
 
         args.Handled = true;
         StartCogitoInject(ent, target, args.User);
@@ -60,7 +66,7 @@ public sealed partial class CogitoInjectorSystem : EntitySystem
         }
 
 
-}
+    }
     private void OnInjectDoAfter(Entity<CogitoInjectorComponent> ent, ref CogitoInjectDoAfterEvent args)
     {
         if (args.Cancelled || args.Target is not { } target || ent.Comp.UsedUp)
@@ -69,14 +75,13 @@ public sealed partial class CogitoInjectorSystem : EntitySystem
         ent.Comp.UsedUp = true;
         Dirty(ent);
 
+        var injected = new CogitoInjectedEvent(args.User, target);
+        RaiseLocalEvent(ent, ref injected);
+
         _audio.PlayPredicted(ent.Comp.InjectSound, target, args.User);
-        _popup.PopupEntity("The injector empties, pouring black ichor into the target.", target, args.User);
+        _popup.PopupEntity("The injector empties, pouring black ichor into the neck.", target, args.User);
 
         args.Handled = true;
-        // 1. Mark the injector as used.
-        // 2. Tell clients the value changed.
-        // 3. Play the injector's sound at the target.
-        // 4. Show a short placeholder popup to the user.
 
     }
 }

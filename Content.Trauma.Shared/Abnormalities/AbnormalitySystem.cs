@@ -15,8 +15,7 @@ public sealed class AbnormalitySystem : EntitySystem
 
         SubscribeLocalEvent<AbnormalityComponent, ExaminedEvent>(OnExamined);
 
-        // TODO 1: subscribe to ExaminedEvent for entities with AbnormalityComponent
-        // Complete
+
     }
 
 
@@ -26,6 +25,5 @@ public sealed class AbnormalitySystem : EntitySystem
             ("risk", ent.Comp.Risk.ToString().ToUpperInvariant())));
     }
 
-    // TODO 2: write the handler that pushes a line of text onto the examine
-    // Complete
+
 }
